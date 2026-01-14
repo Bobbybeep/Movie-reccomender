@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+import os
 
 # -----------------------------
 # Page config (modern Streamlit)
@@ -12,16 +13,23 @@ st.set_page_config(
     layout="wide"
 )
 
+
+@st.cache_data
+def load_data():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    movies_path = os.path.join(base_dir, "movies.pkl")
+    similarity_path = os.path.join(base_dir, "similarity.pkl")
+
+    movies = pickle.load(open(movies_path, "rb"))
+    similarity = pickle.load(open(similarity_path, "rb"))
+
+    return movies, similarity
+
 # -----------------------------
 # Load data (cached)
 # -----------------------------
-@st.cache_data
-def load_data():
-    movies = pickle.load(open('movies.pkl', 'rb'))
-    similarity = pickle.load(open('similarity.pkl', 'rb'))
-    return movies, similarity
 
-movies, similarity = load_data()
 
 # -----------------------------
 # Fetch poster from TMDB (safe + cached)
@@ -91,3 +99,4 @@ if st.button("Recommend 🎯"):
                 f"<p style='text-align:center; font-weight:600;'>{movie['title']}</p>",
                 unsafe_allow_html=True
             )
+
