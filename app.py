@@ -25,6 +25,7 @@ def load_data():
     similarity = pickle.load(open(similarity_path, "rb"))
 
     return movies, similarity
+movies, similarity = load_data()
 
 # -----------------------------
 # Load data (cached)
@@ -99,4 +100,5 @@ if st.button("Recommend 🎯"):
                 f"<p style='text-align:center; font-weight:600;'>{movie['title']}</p>",
                 unsafe_allow_html=True
             )
+
 
